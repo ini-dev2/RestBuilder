@@ -14,7 +14,7 @@
 ## Установка
 
 1. **Зависимости**:
-   - Установите `Newtonsoft.Json` (доступно через NuGet или Unity Package Manager).
+   - Установите `Newtonsoft.Json` (доступно через NuGet или Unity Package Manager, если не желаете использовать Newtonsoft можете удалить файл NewtonsoftSerializer).
    - Установите `Cysharp.Threading.Tasks` (NuGet или GitHub: [UniTask](https://github.com/Cysharp/UniTask)).
    - Убедитесь, что `UnityWebRequest` доступен (встроен в Unity).
 
