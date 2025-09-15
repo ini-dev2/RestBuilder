@@ -1,27 +1,27 @@
 # RestBuilder
 
-**RestBuilder** — библиотека на C# для упрощения работы с HTTP-запросами в Unity с использованием `UnityWebRequest`. Поддерживает асинхронные запросы (GET, POST, PUT, PATCH, DELETE), сериализацию/десериализацию JSON, настройку заголовков и динамическое построение URL.
+**RestBuilder** is a C# library designed to simplify HTTP requests in Unity using `UnityWebRequest`. It supports asynchronous requests (GET, POST, PUT, PATCH, DELETE), JSON serialization/deserialization, header configuration, and dynamic URL building.
 
-## Возможности
+## Features
 
-- Асинхронные HTTP-запросы с использованием `UniTask` (`Cysharp.Threading.Tasks`).
-- Поддержка методов: GET, POST, PUT, PATCH, DELETE.
-- Сериализация/десериализация JSON через `Newtonsoft.Json`.
-- Гибкое построение URL с параметрами пути и query-параметрами.
-- Настройка заголовков и токенов отмены (`CancellationToken`).
-- Обработка ошибок через `ApiException`.
+- Asynchronous HTTP requests using `UniTask` (`Cysharp.Threading.Tasks`).
+- Support for methods: GET, POST, PUT, PATCH, DELETE.
+- JSON serialization/deserialization via `Newtonsoft.Json`.
+- Flexible URL construction with path and query parameters.
+- Configuration of headers and cancellation tokens (`CancellationToken`).
+- Error handling through `ApiException`.
 
-## Установка
+## Installation
 
-1. **Зависимости**:
-   - Установите `Newtonsoft.Json` (доступно через NuGet или Unity Package Manager, если не желаете использовать Newtonsoft можете удалить файл NewtonsoftSerializer).
-   - Установите `Cysharp.Threading.Tasks` (NuGet или GitHub: [UniTask](https://github.com/Cysharp/UniTask)).
-   - Убедитесь, что `UnityWebRequest` доступен (встроен в Unity).
+1. **Dependencies**:
+   - Install `Newtonsoft.Json` (available via NuGet or Unity Package Manager; if you prefer not to use Newtonsoft, you can remove the `NewtonsoftSerializer` file).
+   - Install `Cysharp.Threading.Tasks` (via NuGet or GitHub: [UniTask](https://github.com/Cysharp/UniTask)).
+   - Ensure `UnityWebRequest` is available (built into Unity).
 
-2. **Добавление RestBuilder**:
-   используйте .unitypackage на странице релизов
+2. **Adding RestBuilder**:
+   - Use the `.unitypackage` from the releases page.
 
-3. **Инициализация**:
+3. **Initialization**:
    ```csharp
    using RestBuilder;
 
@@ -29,11 +29,11 @@
    var apiService = new ApiService(serializer);
    ```
 
-## Использование
+## Usage
 
-### 1. Выполнение HTTP-запросов
+### 1. Performing HTTP Requests
 
-Класс `ApiService` предоставляет методы для выполнения HTTP-запросов. Пример:
+The `ApiService` class provides methods for executing HTTP requests. Example:
 
 ```csharp
 using RestBuilder;
@@ -47,45 +47,45 @@ async UniTask GetUserDataAsync()
     try
     {
         var response = await apiService.GetAsync<User>("https://api.example.com/users/123");
-        Console.WriteLine($"Имя пользователя: {response.Name}");
+        Console.WriteLine($"User name: {response.Name}");
     }
     catch (ApiException ex)
     {
-        Console.WriteLine($"Ошибка: {ex.StatusCode}, {ex.Body}");
+        Console.WriteLine($"Error: {ex.StatusCode}, {ex.Body}");
     }
 }
 ```
 
-### 2. Отправка данных
+### 2. Sending Data
 
-Для методов POST, PUT, PATCH можно отправлять данные:
+For POST, PUT, and PATCH methods, you can send data:
 
 ```csharp
 var userData = new { Name = "John", Age = 30 };
 var response = await apiService.PostAsync<object, User>("https://api.example.com/users", userData);
 ```
 
-### 3. Построение URL
+### 3. Building URLs
 
-Класс `EndpointBuilder` позволяет формировать URL с динамическими параметрами:
+The `EndpointBuilder` class allows constructing URLs with dynamic parameters:
 
 ```csharp
 var builder = new EndpointBuilder("https://api.example.com/users/{userId}/profile");
 builder.AddPathParam("userId", 123);
 builder.AddQueryParam("format", "json");
 
-или
+or
 
 var builder = new EndpointBuilder("https://api.example.com/users/{userId}/profile")
-.AddPathParam("userId", 123)
-.AddQueryParam("format", "json")
+    .AddPathParam("userId", 123)
+    .AddQueryParam("format", "json");
 
 string url = builder.Build(); // https://api.example.com/users/123/profile?format=json
 ```
 
-### 4. Настройка заголовков
+### 4. Configuring Headers
 
-Используйте `RequestOptions` для добавления заголовков и токена отмены:
+Use `RequestOptions` to add headers and a cancellation token:
 
 ```csharp
 var options = new RequestOptions
@@ -99,9 +99,9 @@ var options = new RequestOptions
 var response = await apiService.GetAsync<User>("https://api.example.com/users/123", options);
 ```
 
-### 5. Обработка ошибок
+### 5. Error Handling
 
-Ошибки HTTP-запросов обрабатываются через `ApiException`:
+HTTP request errors are handled via `ApiException`:
 
 ```csharp
 try
@@ -110,11 +110,11 @@ try
 }
 catch (ApiException ex)
 {
-    Console.WriteLine($"Ошибка HTTP {ex.StatusCode}: {ex.Body}");
+    Console.WriteLine($"HTTP Error {ex.StatusCode}: {ex.Body}");
 }
 ```
 
-## Пример комплексного использования
+## Comprehensive Example
 
 ```csharp
 async UniTask FetchUserProfileAsync()
@@ -134,21 +134,21 @@ async UniTask FetchUserProfileAsync()
     try
     {
         var profile = await apiService.GetAsync<UserProfile>(builder.Build(), options);
-        Console.WriteLine($"Профиль: {profile.Name}");
+        Console.WriteLine($"Profile: {profile.Name}");
     }
     catch (ApiException ex)
     {
-        Console.WriteLine($"Ошибка: {ex.StatusCode}, {ex.Body}");
+        Console.WriteLine($"Error: {ex.StatusCode}, {ex.Body}");
     }
 }
 ```
 
-## Ограничения
+## Limitations
 
-- Зависимость от `UnityWebRequest`, что ограничивает использование вне Unity.
-- Сериализация только в JSON через `Newtonsoft.Json`. Для других форматов реализуйте собственный `ISerializer`.
-- Требуется установка внешних библиотек (`UniTask`, `Newtonsoft.Json`).
+- Dependency on `UnityWebRequest`, limiting usage outside of Unity.
+- JSON serialization is supported only via `Newtonsoft.Json`. For other formats, implement a custom `ISerializer`.
+- Requires external libraries (`UniTask`, `Newtonsoft.Json`).
 
-## Лицензия
+## License
 
-MIT License. Подробности см. в файле [LICENSE](LICENSE).
+MIT License. See the [LICENSE](LICENSE) file for details.

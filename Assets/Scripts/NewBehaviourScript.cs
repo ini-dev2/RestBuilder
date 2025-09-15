@@ -79,7 +79,8 @@ public sealed class Service
 
     public async UniTask<List<DTO>> GetWithPathParam(string token, int pathParam)
     {
-        var url = _baseUrl + new EndpointBuilder(endPontGetWithPathParam).AddPathParam("userId", pathParam);
+        var url = _baseUrl + new EndpointBuilder(endPontGetWithPathParam)
+            .AddPathParam("userId", pathParam);
         Debug.Log(url);
         var result = await _apiService.GetAsync<List<DTO>>(url, new()
         {
