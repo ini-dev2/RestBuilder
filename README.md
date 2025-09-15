@@ -73,6 +73,13 @@ var response = await apiService.PostAsync<object, User>("https://api.example.com
 var builder = new EndpointBuilder("https://api.example.com/users/{userId}/profile");
 builder.AddPathParam("userId", 123);
 builder.AddQueryParam("format", "json");
+
+или
+
+var builder = new EndpointBuilder("https://api.example.com/users/{userId}/profile")
+.AddPathParam("userId", 123)
+.AddQueryParam("format", "json")
+
 string url = builder.Build(); // https://api.example.com/users/123/profile?format=json
 ```
 
