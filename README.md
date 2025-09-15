@@ -19,17 +19,7 @@
    - Убедитесь, что `UnityWebRequest` доступен (встроен в Unity).
 
 2. **Добавление RestBuilder**:
-   - Склонируйте репозиторий или скопируйте файлы из папки `RestBuilder` в ваш проект:
-     ```
-     Assets/Scripts/RestBuilder/
-     ├── IApiService.cs
-     ├── ApiService.cs
-     ├── EndpointBuilder.cs
-     ├── RequestOptions.cs
-     ├── ISerializer.cs
-     ├── NewtonsoftSerializer.cs
-     ├── ApiException.cs
-     ```
+   используйте .unitypackage на странице релизов
 
 3. **Инициализация**:
    ```csharp
